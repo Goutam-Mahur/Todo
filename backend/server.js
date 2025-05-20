@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ origin: process.env.BACKEND_URL, credentials: true }));
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
