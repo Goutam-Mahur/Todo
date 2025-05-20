@@ -12,8 +12,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 connectDB();
+const allowed = process.env.ALLOWED_ORIGINS.split(",");
 
-app.use(cors({ origin: process.env.BACKEND_URL, credentials: true }));
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin || allowed.includes(origin)) return cb(null, true);
+      cb(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
